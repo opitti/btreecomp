@@ -51,18 +51,6 @@ impl TreeNode {
         }
     }/* end addNode*/
 
-    /*
-        def findnb(self,node,value,nb):
-        if node.val==value:
-            return nb
-        else:
-            if value>node.val:
-                return self.findnb(node.right,value,nb+1)
-            else:
-                if value<node.val:
-                    return self.findnb(node.left,value,nb+1)
-
-    */
     pub fn findnb(&self, valeur:u32) -> u32 {
 
         if self.val == valeur {
