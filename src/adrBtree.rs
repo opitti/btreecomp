@@ -35,20 +35,21 @@ impl TreeNode {
     pub fn addNode(&mut self, valeur: String, ind:u32) {
         let vv = valeur.clone();
         //println!("valeur {}, self.val {}", valeur, self.val);
-        if valeur > self.val {
-            match &mut self.right {
-                None => {
-                    //println!("R: {:?}, {}", self, valeur);
-                    self.right = Some(Box::new(TreeNode::new(vv, ind)))
+        match valeur {
+            d if d > self.val => {
+                match &mut self.right {
+                    None => {
+                        //println!("R: {:?}, {}", self, valeur);
+                        self.right = Some(Box::new(TreeNode::new(vv, ind)))
+                    }
+                    Some(rg) => {
+                        //self.right.as_ref().map(|v| v.addNode(vv));
+                        rg.addNode(vv, ind);
+                    }
                 }
 
-                Some(rg) => {
-                    //self.right.as_ref().map(|v| v.addNode(vv));
-                    rg.addNode(vv, ind);
-                }
-            }
-        } else {
-            if valeur < self.val {
+            },
+            d if d < self.val => {
                 match &mut self.left {
                     None => {
                         //println!("L: {:?}, {}", self, valeur);
@@ -59,9 +60,14 @@ impl TreeNode {
                     Some(lf) => {
                         //self.left.map(|mut v|v.addNode(vv));
                         lf.addNode(vv,ind);
-                    }
-                }
-            }
+                    }                }
+
+            },
+            d if d == self.val => {
+                //println!("FIND SAME");
+                self.index.push(ind);
+            },
+            _ => {}
         }
     }/* end addNode*/
 
@@ -128,7 +134,7 @@ impl Tree {
 fn main() -> io::Result<()> {
     let mut t = Tree::new();
 
-    let v: Vec<String> = vec!["abattoir".to_string(),"Brighton".to_string(),"calcium".to_string(),"devaient".to_string(),"calcaire".to_string(),"abolitionnisme".to_string(),"glisser".to_string(),"devais".to_string(),"Brigitte".to_string(),"brigand".to_string(),"diffamation".to_string(),"effet".to_string(),"glissent".to_string(),"linguistes".to_string(),"calanque".to_string(),"effets".to_string(),"abattre".to_string(),"dieux".to_string(),"glissent".to_string(),"calanque".to_string(),"dieu".to_string(),"linguiste".to_string(),"efficace".to_string(),"abattoir".to_string(),"glissement".to_string()];
+    let v: Vec<String> = vec!["abattoir".to_string(),"Brighton".to_string(),"calcium".to_string(),"devaient".to_string(),"calcaire".to_string(),"abolitionnisme".to_string(),"glisser".to_string(),"devais".to_string(),"Brigitte".to_string(),"brigand".to_string(),"diffamation".to_string(),"effet".to_string(),"glissent".to_string(),"linguistes".to_string(),"calanque".to_string(),"effets".to_string(),"abattre".to_string(),"dieux".to_string(),"glissent".to_string(),"calanque".to_string(),"dieu".to_string(),"linguiste".to_string(),"efficace".to_string(),"abattoir".to_string(),"glissement".to_string(),"abolitionnisme".to_string()];
 
     let mut first = true;
     let mut bcl=0;
