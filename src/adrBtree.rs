@@ -71,14 +71,14 @@ impl TreeNode {
         }
     }/* end addNode*/
 
-    pub fn findnb(&self, valeur:String) -> String {
+    pub fn findnb(&self, valeur:String) -> Option<&Vec<u32>>{
 
         if self.val == valeur {
-            return valeur;
+            return Some(&self.index);
         } else {
             if valeur > self.val {
                 match &self.right {
-                    None => 0,
+                    None => {},
                     Some(r) => return r.findnb(valeur),
                 };
             }else{
@@ -90,7 +90,7 @@ impl TreeNode {
                 }
             }
         }
-        return "".to_string();
+        return None;
     }
 }
 
@@ -122,10 +122,10 @@ impl Tree {
         }
     }
 
-    pub fn find_from_root(&self, valeur: String) -> String {
+    pub fn find_from_root(&self, valeur: String) -> Option<&Vec<u32>> {
 
         match &self.root {
-            None => "".to_string(),
+            None => None,
             Some(root) => return root.findnb(valeur),
         }
     }
@@ -134,7 +134,7 @@ impl Tree {
 fn main() -> io::Result<()> {
     let mut t = Tree::new();
 
-    let v: Vec<String> = vec!["abattoir".to_string(),"Brighton".to_string(),"calcium".to_string(),"devaient".to_string(),"calcaire".to_string(),"abolitionnisme".to_string(),"glisser".to_string(),"devais".to_string(),"Brigitte".to_string(),"brigand".to_string(),"diffamation".to_string(),"effet".to_string(),"glissent".to_string(),"linguistes".to_string(),"calanque".to_string(),"effets".to_string(),"abattre".to_string(),"dieux".to_string(),"glissent".to_string(),"calanque".to_string(),"dieu".to_string(),"linguiste".to_string(),"efficace".to_string(),"abattoir".to_string(),"glissement".to_string(),"abolitionnisme".to_string()];
+    let v: Vec<String> = vec!["abattoir".to_string(),"Brighton".to_string(),"calcium".to_string(),"glissent".to_string(),"devaient".to_string(),"calcaire".to_string(),"abolitionnisme".to_string(),"glisser".to_string(),"devais".to_string(),"Brigitte".to_string(),"brigand".to_string(),"diffamation".to_string(),"effet".to_string(),"glissent".to_string(),"linguistes".to_string(),"calanque".to_string(),"effets".to_string(),"abattre".to_string(),"dieux".to_string(),"glissent".to_string(),"calanque".to_string(),"dieu".to_string(),"linguiste".to_string(),"efficace".to_string(),"abattoir".to_string(),"glissement".to_string(),"abolitionnisme".to_string()];
 
     let mut first = true;
     let mut bcl=0;
@@ -148,7 +148,7 @@ fn main() -> io::Result<()> {
         }
         bcl = bcl + 1;
     }
-    let res = t.find_from_root("devaient".to_string());
+    let res = t.find_from_root("glissent".to_string());
     println!("{:?}", res);
 
     let  mut sum = Duration::nanoseconds(1);

@@ -33,7 +33,8 @@ fn main() -> io::Result<()> {
                 println!("pos {}",pos);
                 let mut split = res.split(";");
                 let vec: Vec<&str> = split.collect();
-                println!("{} ->{} . {} . {} . {}",pos,vec[2],vec[4],vec[6],vec[7]);
+                //println!("{} ->{} . {} . {} . {}",pos,vec[2],vec[4],vec[6],vec[7]);
+                println!("{} ->{} . {}",pos,vec[4],vec[7]);
                 println!("_____________________________________________________________________________________________");
 
             }
