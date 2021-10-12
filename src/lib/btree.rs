@@ -34,7 +34,7 @@ impl TreeNode {
 
     pub fn addNode(&mut self, valeur: String, ind:u64) {
         let vv = valeur.clone();
-        println!("add  valeur {}, ", &valeur);
+        //println!("add  valeur {}, ", &valeur);
         match valeur {
             d if d > self.val => {
                 match &mut self.right {

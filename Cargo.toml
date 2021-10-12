@@ -14,8 +14,13 @@ name="fseek"
 path="src/fseek.rs"
 
 [[bin]]
+name="fseektot"
+path="src/fseekTotal.rs"
+
+[[bin]]
 name="rseek"
 path="src/readSeek.rs"
+
 
 [[bin]]
 name="srbt"
@@ -30,3 +35,4 @@ rand="*"
 time="*"
 bincode = "1.3.3"
 serde = {version = "1.0.130", features=["derive"]}
+array_tool = "1.0.3"
