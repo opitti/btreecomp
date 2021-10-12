@@ -165,7 +165,7 @@ fn main() -> io::Result<()> {
     let mut file = OpenOptions::new()
     .write(true)
     // either use ? or unwrap since it returns a Result
-    .open("/Users/olivierpittiglio/dev/mBase/btree/btree-1000.bt")?;
+    .open("/Users/olivier/dev/rust/btreecomp/btree-1000.bt")?;
     file.write_all(&encoded);
 
     // ---
@@ -173,12 +173,15 @@ fn main() -> io::Result<()> {
     let mut file2 = OpenOptions::new()
     .read(true)
     // either use ? or unwrap since it returns a Result
-    .open("/Users/olivierpittiglio/dev/mBase/btree/btree-1000.bt")?;
+    .open("/Users/olivier/dev/rust/btreecomp/btree-1000.bt")?;
 
     let mut decodedVec: Vec<u8> = vec![];
     file2.read_to_end(&mut decodedVec);
 
     let decoded: Tree = bincode::deserialize(&decodedVec[..]).unwrap();
+
+    let res = decoded.find_from_root("glissent".to_string());
+    println!("{:?}", res);
 
     let  mut sum2 = Duration::nanoseconds(1);
     for i2 in &v {

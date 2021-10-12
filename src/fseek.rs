@@ -1,3 +1,6 @@
+mod lib;
+use lib::btree::{Tree,TreeNode};  
+
 use std::{
     io::{self, BufRead, BufReader, Seek},
     fs::File,
@@ -5,6 +8,11 @@ use std::{
 
 use std::io::prelude::*;
 use std::io::SeekFrom;
+
+use std::io::Read;
+use std::io::Write; // bring trait into scope
+//use std::fs;
+use std::fs::OpenOptions;
 
 fn showline(pos:u64) -> io::Result<()> {
 
@@ -20,6 +28,8 @@ fn showline(pos:u64) -> io::Result<()> {
 fn main() -> io::Result<()> {
 
     let mut f = BufReader::new(File::open("adresses-782.csv")?);
+    let mut bt = Tree::new();
+    bt.addNode("a".to_string(),0);
 
     loop {
         let mut res = &mut String::new();
@@ -35,6 +45,19 @@ fn main() -> io::Result<()> {
                 let vec: Vec<&str> = split.collect();
                 //println!("{} ->{} . {} . {} . {}",pos,vec[2],vec[4],vec[6],vec[7]);
                 println!("{} ->{} . {}",pos,vec[4],vec[7]);
+
+                let mut c41 : Vec<&str> = vec[4].split(" ").collect(); 
+                for v41 in c41 {
+                    println!("v41 {} -> {}",&vec[4],&v41);
+                    bt.add_root(v41.to_string().clone(), pos);
+                }
+
+                let mut c47 : Vec<&str> = vec[7].split(" ").collect(); 
+                for v47 in c47 {
+                    println!("{} -> {}",&vec[7],&v47);
+                    bt.add_root(v47.to_string().clone(), pos);
+                }   
+
                 println!("_____________________________________________________________________________________________");
 
             }
@@ -45,6 +68,13 @@ fn main() -> io::Result<()> {
             }
         }
     }
-    showline(331);
+    let encoded: Vec<u8> = bincode::serialize(&bt).unwrap();
+
+    let mut file = OpenOptions::new()
+    .write(true)
+    .create(true)
+    // either use ? or unwrap since it returns a Result
+    .open("/Users/olivier/dev/rust/btreecomp/btree-1000.bt")?;
+    file.write_all(&encoded);
     Ok(())
 }

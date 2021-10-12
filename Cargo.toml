@@ -13,6 +13,9 @@ path="src/file1.rs"
 name="fseek"
 path="src/fseek.rs"
 
+[[bin]]
+name="rseek"
+path="src/readSeek.rs"
 
 [[bin]]
 name="srbt"
