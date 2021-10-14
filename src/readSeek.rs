@@ -1,5 +1,7 @@
 mod lib;
 use lib::btree::{Tree,TreeNode};
+use std::collections::HashSet;
+
 
 use std::{
     io::{self, BufRead, BufReader, Seek},
@@ -23,7 +25,7 @@ fn main() -> io::Result<()> {
     let mut file2 = OpenOptions::new()
     .read(true)
     // either use ? or unwrap since it returns a Result
-    .open("/Users/olivierpittiglio/dev/mBase/btree/btree-1000.bt")?;
+    .open("btree-1000.bt")?;
     let mut decodedVec: Vec<u8> = vec![];
     file2.read_to_end(&mut decodedVec);
     let decoded: Tree = bincode::deserialize(&decodedVec[..]).unwrap();
@@ -55,13 +57,16 @@ fn main() -> io::Result<()> {
     }
 */
 
-    let resinters = res2.unwrap().intersect(res4.unwrap().to_vec());
+    //let resinters = res2.unwrap().intersect(res4.unwrap().to_vec());
+    let set_res2: HashSet<_> = res2.unwrap().into_iter().collect();
+    let set_res4: HashSet<_> = res4.unwrap().into_iter().collect();
+    let resinters = set_res2.intersection(&set_res4);
     let end = start.elapsed();
     println!("sum {:?} ",end);
     for resinter in resinters{
         let mut f2 = BufReader::new(File::open("adresses-78.csv")?);
         // move the cursor 42 bytes from the start of the file
-        f2.seek(SeekFrom::Start(resinter))?;
+        f2.seek(SeekFrom::Start(**resinter))?;
         let r2 = &mut String::new();
         f2.read_line(r2)?;
         println!("Showline inter => {}",r2);

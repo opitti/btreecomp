@@ -39,28 +39,28 @@ fn main() -> io::Result<()> {
                 if n==0{
                     break;
                 }
-                println!("bytes read {} {}",res,n);
-                println!("pos {}",pos);
+                //println!("bytes read {} {}",res,n);
+                //println!("pos {}",pos);
                 let mut split = res.split(";");
                 let vec: Vec<&str> = split.collect();
                 //println!("{} ->{} . {} . {} . {}",pos,vec[2],vec[4],vec[6],vec[7]);
-                println!("{} ->{} . {}",pos,vec[4],vec[7]);
+                //println!("{} ->{} . {}",pos,vec[4],vec[7]);
 
                 let mut c41 : Vec<&str> = vec[4].split(" ").collect();
-                println!("c41 len = {}",c41.len());
+                //println!("c41 len = {}",c41.len());
                 let bcl41 = 1;
                 for v41 in c41 {
-                    println!("v41 {} -> {} / {}",&vec[4],&v41,bcl41);
+                    //println!("v41 {} -> {} / {}",&vec[4],&v41,bcl41);
                     bt.add_root(v41.to_string().clone(), pos);
                 }
 
                 let mut c47 : Vec<&str> = vec[7].split(" ").collect();
                 for v47 in c47 {
-                    println!("{} -> {}",&vec[7],&v47);
+                    //println!("{} -> {}",&vec[7],&v47);
                     bt.add_root(v47.to_string().clone(), pos);
                 }
 
-                println!("_____________________________________________________________________________________________");
+                //println!("_____________________________________________________________________________________________");
 
             }
 
@@ -76,7 +76,7 @@ fn main() -> io::Result<()> {
     .write(true)
     .create(true)
     // either use ? or unwrap since it returns a Result
-    .open("/Users/olivierpittiglio/dev/mBase/btree/btree-1000.bt")?;
+    .open("btree-1000.bt")?;
     file.write_all(&encoded);
     Ok(())
 }

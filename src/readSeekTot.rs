@@ -17,21 +17,23 @@ use array_tool::vec::Intersect;
 
 use time::Instant;
 use time::Duration;
-
+use std::collections::HashSet;
 extern crate quickersort;
 
 fn main() -> io::Result<()> {
-    let start = Instant::now();
+    
     let mut file2 = OpenOptions::new()
     .read(true)
     // either use ? or unwrap since it returns a Result
-    .open("/Users/olivierpittiglio/dev/mBase/btree-total.bt")?;
+    .open("btree-total.bt")?;
     let mut decodedVec: Vec<u8> = vec![];
     file2.read_to_end(&mut decodedVec);
     let decoded: Tree = bincode::deserialize(&decodedVec[..]).unwrap();
 
+
+    //  Vieux Moulin
     println!("read decoded end ");
-    let res4 = decoded.find_from_root("Barre".to_string());
+    let res4 = decoded.find_from_root("Vieux".to_string());
     //println!("{:?}", res4);
     println!("{:?}", res4.unwrap().len());
 /*
@@ -57,6 +59,7 @@ fn main() -> io::Result<()> {
         println!("Showline => {}",r2);
     }
 */
+/*  working method but take time 
     println!("sorting res2");
     let mut r = res2.unwrap().to_vec();
     quickersort::sort(&mut r[..]);
@@ -67,12 +70,18 @@ fn main() -> io::Result<()> {
     println!("before intersection");
     //let resinters = res2.unwrap().intersect(res4.unwrap().to_vec());
     let resinters = r.intersect(r2);
+*/
+let start = Instant::now();
+    let set_res2: HashSet<_> = res2.unwrap().into_iter().collect();
+    let set_res4: HashSet<_> = res4.unwrap().into_iter().collect();
+    let resinters = set_res2.intersection(&set_res4);
     let end = start.elapsed();
     println!("sum {:?} ",end);
     for resinter in resinters{
-        let mut f2 = BufReader::new(File::open("/Volumes/olivier2/dev/adresses/ORIGIN/adresses-france.csv")?);
+        //let mut f2 = BufReader::new(File::open("/Volumes/olivier2/dev/adresses/ORIGIN/adresses-france.csv")?);
+        let mut f2 = BufReader::new(File::open("adr2.csv")?);
         // move the cursor 42 bytes from the start of the file
-        f2.seek(SeekFrom::Start(resinter))?;
+        f2.seek(SeekFrom::Start(**resinter))?;
         let r2 = &mut String::new();
         f2.read_line(r2)?;
         println!("Showline inter => {}",r2);

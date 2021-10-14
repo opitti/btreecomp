@@ -18,7 +18,8 @@ use std::fs::OpenOptions;
 
 fn main() -> io::Result<()> {
 
-    let mut f = BufReader::new(File::open("/Volumes/olivier2/dev/adresses/ORIGIN/adresses-france.csv")?);
+    //let mut f = BufReader::new(File::open("adresses-france.csv")?);
+    let mut f = BufReader::new(File::open("adr2.csv")?);
     let mut bt = Tree::new();
     bt.addNode("a".to_string(),0);
     let mut bcltot: u64 = 0;
@@ -55,14 +56,14 @@ fn main() -> io::Result<()> {
                 //println!("_____________________________________________________________________________________________");
 
             }
-
+            // 2434865 
             Err(err) => {
                 println!("err {}",err);
                 break;
             }
         }
         bcltot = bcltot + 1;
-        if (bcltot % 10000) == 0{
+        if (bcltot % 30000) == 0{
             println!("enreg traite : {}",bcltot);
         }
     }
@@ -72,7 +73,7 @@ fn main() -> io::Result<()> {
     .write(true)
     .create(true)
     // either use ? or unwrap since it returns a Result
-    .open("/Users/olivierpittiglio/dev/mBase/btree/btree-total.bt")?;
+    .open("btree-total.bt")?;
     file.write_all(&encoded);
     Ok(())
 }
