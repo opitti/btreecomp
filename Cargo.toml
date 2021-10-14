@@ -21,6 +21,9 @@ path="src/fseekTotal.rs"
 name="rseek"
 path="src/readSeek.rs"
 
+[[bin]]
+name="rseektot"
+path="src/readSeekTot.rs"
 
 [[bin]]
 name="srbt"
@@ -36,3 +39,4 @@ time="*"
 bincode = "1.3.3"
 serde = {version = "1.0.130", features=["derive"]}
 array_tool = "1.0.3"
+quickersort = "3.0.1"
