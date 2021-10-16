@@ -2,6 +2,7 @@ mod lib;
 
 #[macro_use] extern crate rocket;
 use rocket::tokio::time::{sleep, Duration};
+use rocket::State;
 
 use lib::btree::{Tree};
 
@@ -116,18 +117,27 @@ impl DecodedTree {
 
 }
 
-fn main() -> io::Result<()> {
 
+#[get("/find/<str1>/<str2>")]
+fn index(str1:String, str2:String,decoded: &State<DecodedTree>) ->  &'static Vec<String> {
 
+    let res = decoded.findfor2(str1,str2).unwrap();
+    return &res;
+}
 
-    // ----------------------------------------------------------------------------------
+#[rocket::main]
+async fn main() -> io::Result<()> {
 
-    //  Vieux Moulin
-    // 1er recherche
     let decoded = DecodedTree::initTree().unwrap();
+    rocket::build()
+    .manage(decoded)
+    .mount("/", routes![index])
+    .launch();
+
+    /*
     for res in decoded.findfor3("Lot".to_string(), "Eau".to_string(), "Chateau".to_string()).unwrap() {
         println!("Solution ==> {}",res);
     }
-
+    */
     Ok(())
 }

@@ -22,8 +22,9 @@ async fn delay(seconds: u64) -> String {
 #[rocket::main]
 async fn main() {
     #[allow(unused_must_use)]
+    
     rocket::build()
-    .mount("/", routes![delay])
+        .mount("/", routes![delay])
         .mount("/hello", routes![index])
         .launch()
         .await;
