@@ -1,0 +1,17 @@
+lecture de l'index Duration { seconds: 0, nanoseconds: 43636 } 
+decodage de l'index dans un Tree Duration { seconds: 25, nanoseconds: 383758845 } 
+read decoded end 
+nombre de resultat 26351  temps de calcul Duration { seconds: 0, nanoseconds: 9573 }
+nombre de resultat 64694  temps de calcul Duration { seconds: 0, nanoseconds: 3838 }
+nombre de resultat 1870  temps de calcul Duration { seconds: 0, nanoseconds: 7863 }
+calcul de l'intersections Duration { seconds: 0, nanoseconds: 78709352 } 
+Showline inter => 31161_a007_00003;31161_A007;3;;Lot du Chateau Eau;31450;31161;Deyme;;;580694.48;6265351.14;1.52595;43.47723;;;DEYME;LOT DU CHATEAU EAU;arcep;arcep
+
+Showline inter => 31161_a007_00004;31161_A007;4;;Lot du Chateau Eau;31450;31161;Deyme;;;580698.73;6265318.82;1.52601;43.47694;;;DEYME;LOT DU CHATEAU EAU;arcep;arcep
+
+Showline inter => 31161_a007_00001;31161_A007;1;;Lot du Chateau Eau;31450;31161;Deyme;;;580640.55;6265324.36;1.52529;43.47698;;;DEYME;LOT DU CHATEAU EAU;arcep;arcep
+
+Showline inter => 31161_a007_00005;31161_A007;5;;Lot du Chateau Eau;31450;31161;Deyme;;;580682.67;6265282.44;1.52582;43.47661;;;DEYME;LOT DU CHATEAU EAU;arcep;arcep
+
+Showline inter => 31161_a007_00002;31161_A007;2;;Lot du Chateau Eau;31450;31161;Deyme;;;580655.69;6265355.2;1.52547;43.47726;;;DEYME;LOT DU CHATEAU EAU;arcep;arcep
+
