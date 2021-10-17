@@ -3,6 +3,9 @@ mod lib;
 #[macro_use] extern crate rocket;
 use rocket::tokio::time::{sleep, Duration};
 use rocket::State;
+use rocket::response::status::NotFound;
+use rocket::serde::{Serialize, json::Json};
+
 
 use lib::btree::{Tree};
 
@@ -34,8 +37,8 @@ impl DecodedTree {
         let s1 = Instant::now();
         let mut file2 = OpenOptions::new()
         .read(true)
-
         .open("/Users/olivierpittiglio/dev/mBase/btree-total.bt")?;
+        //.open("/home/olivier/dev/rust/btreecompdata/btree-total.bt")?;
         let e1 = s1.elapsed();
         println!("lecture de l'index {:?} ",e1);
 
@@ -83,6 +86,7 @@ impl DecodedTree {
 
         for resinter in resinters2{
             let mut f2 = BufReader::new(File::open("/Volumes/olivier2/dev/adresses/ORIGIN/adresses-france.csv")?);
+            //let mut f2 = BufReader::new(File::open("/home/olivier/dev/rust/btreecompdata/adresses-france.csv")?);
             f2.seek(SeekFrom::Start(**resinter))?;
             let r2 = &mut String::new();
             f2.read_line(r2)?;
@@ -107,6 +111,7 @@ impl DecodedTree {
         let mut res: Vec<String> = Vec::new();
         for resinter in resinters{
             let mut f2 = BufReader::new(File::open("/Volumes/olivier2/dev/adresses/ORIGIN/adresses-france.csv")?);
+            //let mut f2 = BufReader::new(File::open("/home/olivier/dev/rust/btreecompdata/adresses-france.csv")?);
             f2.seek(SeekFrom::Start(**resinter))?;
             let r2 = &mut String::new();
             f2.read_line(r2)?;
@@ -117,27 +122,46 @@ impl DecodedTree {
 
 }
 
+#[derive(Serialize)]
+pub struct MyResult{
+    res: Vec<String>
+}
+impl MyResult {
+    pub fn new()->Self{
+        MyResult{
+            res: Vec::new()
+        }
+    }
+}
 
 #[get("/find/<str1>/<str2>")]
-fn index(str1:String, str2:String,decoded: &State<DecodedTree>) ->  &'static Vec<String> {
+fn index(str1:String, str2:String,decoded: &State<DecodedTree>) ->  Json<MyResult> {
 
     let res = decoded.findfor2(str1,str2).unwrap();
-    return &res;
+    println!("find nymber of result: {}",res.len());
+    let mut outres = MyResult::new();
+    for r in res {
+        outres.res.push(r);
+    }
+    return Json(outres);
 }
 
 #[rocket::main]
-async fn main() -> io::Result<()> {
+async fn main()  {
 
     let decoded = DecodedTree::initTree().unwrap();
+
+    println!("START API");
     rocket::build()
     .manage(decoded)
     .mount("/", routes![index])
-    .launch();
+    .launch()
+    .await;
 
     /*
     for res in decoded.findfor3("Lot".to_string(), "Eau".to_string(), "Chateau".to_string()).unwrap() {
         println!("Solution ==> {}",res);
     }
     */
-    Ok(())
+    //Ok(())
 }
