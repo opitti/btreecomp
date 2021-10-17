@@ -27,6 +27,20 @@ use time::Instant;
 //use time::Duration;
 use std::collections::HashSet;
 
+
+#[derive(Serialize)]
+pub struct MyResult{
+    res: Vec<String>
+}
+impl MyResult {
+    pub fn new()->Self{
+        MyResult{
+            res: Vec::new()
+        }
+    }
+}
+
+
 pub struct DecodedTree{
     decoded:Tree
 }
@@ -95,7 +109,7 @@ impl DecodedTree {
         return Ok(res);
     }
 
-    pub fn findfor2(&self,str1:String,str2:String,) -> io::Result<Vec<String>> {
+    pub fn findfor2(&self,str1:String,str2:String,) -> io::Result<MyResult> {
 
         let res2 = self.find(str1);
         let res4 = self.find(str2);
@@ -108,42 +122,41 @@ impl DecodedTree {
         let end = start.elapsed();
         println!("calcul de l'intersections {:?} ",end);
 
-        let mut res: Vec<String> = Vec::new();
+        //let mut res: Vec<String> = Vec::new();
+        let mut outres = MyResult::new();
+        let mut somme_des_seek: f64 = 0.0;
+
+        let start_file = Instant::now();
+        let mut f2 = BufReader::new(File::open("/Volumes/olivier2/dev/adresses/ORIGIN/adresses-france.csv")?);
+        //let mut f2 = BufReader::new(File::open("/home/olivier/dev/rust/btreecompdata/adresses-france.csv")?);
+        let end_file = start_file.elapsed();
+        println!("open file time : {}",end_file.as_seconds_f64());
+    
         for resinter in resinters{
-            let mut f2 = BufReader::new(File::open("/Volumes/olivier2/dev/adresses/ORIGIN/adresses-france.csv")?);
-            //let mut f2 = BufReader::new(File::open("/home/olivier/dev/rust/btreecompdata/adresses-france.csv")?);
+
+            let start_file_seek = Instant::now();
             f2.seek(SeekFrom::Start(**resinter))?;
+            let end_file_seek = start_file_seek.elapsed();
+            println!("file seek time : {}",end_file_seek.as_seconds_f64());
+            somme_des_seek += end_file.as_seconds_f64();
+
             let r2 = &mut String::new();
             f2.read_line(r2)?;
-            res.push(r2.clone());
+            outres.res.push(r2.clone());
         }
-        return Ok(res);
+        println!("somme des file seek {}",somme_des_seek);
+        return Ok(outres);
     }
 
 }
 
-#[derive(Serialize)]
-pub struct MyResult{
-    res: Vec<String>
-}
-impl MyResult {
-    pub fn new()->Self{
-        MyResult{
-            res: Vec::new()
-        }
-    }
-}
+
 
 #[get("/find/<str1>/<str2>")]
 fn index(str1:String, str2:String,decoded: &State<DecodedTree>) ->  Json<MyResult> {
-
     let res = decoded.findfor2(str1,str2).unwrap();
-    println!("find nymber of result: {}",res.len());
-    let mut outres = MyResult::new();
-    for r in res {
-        outres.res.push(r);
-    }
-    return Json(outres);
+    println!("find nymber of result: {}",res.res.len());
+    return Json(res);
 }
 
 #[rocket::main]
